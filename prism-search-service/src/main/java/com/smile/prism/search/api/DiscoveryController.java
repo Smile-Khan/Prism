@@ -1,13 +1,12 @@
 package com.smile.prism.search.api;
 
 import com.smile.prism.search.service.DiscoveryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.smile.prism.search.api.SearchResponse;
+import com.smile.prism.search.api.DiscoveryRequest;
 
-/**
- * Public Ingress for the Prism Discovery Engine.
- */
 @RestController
 @RequestMapping("/api/v1/discovery")
 @RequiredArgsConstructor
@@ -16,13 +15,11 @@ public class DiscoveryController {
     private final DiscoveryService discoveryService;
 
     /**
-     * GET /api/v1/discovery/search?q=Industrial
+     * Advanced Search Endpoint.
+     * POST is used here to accommodate complex search bodies (standard in Discovery Engines).
      */
-    @GetMapping("/search")
-    public ResponseEntity<SearchResponse> search(@RequestParam(name = "q") String query) {
-        if (query == null || query.isBlank()) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(discoveryService.discover(query));
+    @PostMapping("/search")
+    public SearchResponse advancedSearch(@RequestBody @Valid DiscoveryRequest request) {
+        return discoveryService.discover(request);
     }
 }
