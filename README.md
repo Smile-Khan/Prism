@@ -40,54 +40,82 @@ The project implements a resilient event-driven pipeline:
 
 ## 📁 Project Structure
 
-
+```text
 prism/
-├── prism-command-service/   # Write-Model API (Ingestion -> Postgres)
-├── prism-search-service/    # Read-Model API (Kafka -> Elasticsearch -> Search API)
+├── prism-command-service/   # Write Model (API → PostgreSQL)
+├── prism-search-service/    # Read Model (Kafka → Elasticsearch → Search API)
 ├── docker-compose.yml       # Infrastructure orchestration
-└── pom.xml                  # Root Aggregator & Dependency Management
+└── pom.xml                  # Parent POM & dependency management
+```
+
+```
+## 🚦 Getting Started
+
+### Prerequisites
+- Java 21 SDK
+- Maven 3.9+
+- Docker & Docker Compose
+```
 
 
-🚦 Getting Started
-Prerequisites
-Docker & Docker Compose
-Java 21 SDK
-Maven 3.9+
-Infrastructure Setup
+
+### Infrastructure Setup
 Spin up the distributed backbone:
+
+```bash
 docker-compose up -d
-
-
+```
 Build & Run
 From the root directory:
-
+```
 mvn clean install -DskipTests
-# Start Command Service
+```
+### Start Command Service (In a new terminal)
+```
 cd prism-command-service && ./mvnw spring-boot:run
-# Start Search Service
+```
+### Start Search Service (In a new terminal)
+```
 cd prism-search-service && ./mvnw spring-boot:run
+```
 
-🔍 API Highlights
-Ingest an Event (Command)
-POST http://localhost:8080/api/v1/events
+# 🔍 API Highlights
+## 🔍 API Highlights
 
-JSON
+### ➕ Ingest an Event (Command)
+
+**Endpoint**
+
+ **POST** http://localhost:8080/api/v1/events
+
+**Payload**
+```json
 {
-    "title": "Smile Khan Flagship Project",
-    "category": "ENGINEERING",
-    "metadata": { "status": "active" }
+  "title": "Smile Khan Flagship Project",
+  "category": "ENGINEERING",
+  "metadata": {
+    "status": "active"
+  }
 }
+```
 
-Discover Results (Query)
-POST http://localhost:8081/api/v1/discovery/search
 
-JSON
+# 3. 🔎 Discover Results (Query)
+Endpoint: 
+**POST**
+http://localhost:8081/api/v1/discovery/search
+
+**Payload**
+```json
 {
-    "query": "Flagship",
-    "category": "ENGINEERING",
-    "page": 0,
-    "size": 10
+  "query": "Flagship",
+  "category": "ENGINEERING",
+  "page": 0,
+  "size": 10
 }
+```
 
-Author: Smile-Khan
-Role: Java Backend Specialist | Distributed Systems Architect
+## 👤 Author
+
+**Smile Khan**  
+Java Backend Engineer | Distributed Systems & Event-Driven Architectures
